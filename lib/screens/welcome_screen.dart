@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:chat420/components/rounded_button.dart';
+import 'package:chat420/screens/login_screen.dart';
+import 'package:chat420/screens/register_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  static const String id = 'welcomeScreen';
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
@@ -33,12 +36,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               RoundedButton(
                 buttonColor: Colors.white,
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, LoginScreen.id);
+                },
                 text: 'Sign In',
               ),
               RoundedButton(
                 buttonColor: Colors.white,
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, RegisterScreen.id);
+                },
                 text: 'Register',
               ),
             ],

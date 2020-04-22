@@ -1,12 +1,23 @@
+import 'package:chat420/screens/user_chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:chat420/constants.dart';
 import 'package:chat420/screens/main_chat_screen.dart';
 import 'package:chat420/components/rounded_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  static const String id = 'registerScreen';
+
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
   String username;
   String password;
-  static const String id = 'registerScreen';
+  String confirmPassword;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +46,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
               TextField(
+                cursorColor: Colors.black,
                 textAlign: TextAlign.center,
                 style: kTextFieldStyle,
                 onChanged: (newValue) {
@@ -46,6 +58,7 @@ class RegisterScreen extends StatelessWidget {
                 height: 8.0,
               ),
               TextField(
+                cursorColor: Colors.black,
                 textAlign: TextAlign.center,
                 obscureText: true,
                 style: kTextFieldStyle,
@@ -59,11 +72,12 @@ class RegisterScreen extends StatelessWidget {
                 height: 8.0,
               ),
               TextField(
+                cursorColor: Colors.black,
                 textAlign: TextAlign.center,
                 obscureText: true,
                 style: kTextFieldStyle,
                 onChanged: (newValue) {
-                  password = newValue;
+                  confirmPassword = newValue;
                 },
                 decoration: kTextFieldDecoration.copyWith(
                     labelText: 'Confirm Password'),
@@ -73,10 +87,18 @@ class RegisterScreen extends StatelessWidget {
               ),
               RoundedButton(
                 buttonColor: Colors.white,
-                onTap: () {
-                  Navigator.pushNamed(context, MainChatScreen.id);
+                onTap: () async {
+                  try {
+                    final newUser = await _auth.createUserWithEmailAndPassword(
+                        email: username, password: password);
+                    if (newUser != null) {
+                      Navigator.pushNamed(context, PrivateChatScreen.id);
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
                 },
-                text: 'Sign In',
+                text: 'Register',
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:chat420/screens/login_screen.dart';
 import 'package:chat420/screens/main_chat_screen.dart';
 import 'package:chat420/screens/register_screen.dart';
+import 'package:chat420/screens/user_chat_screen.dart';
 import 'package:chat420/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.id: (context) => LoginScreen(),
         RegisterScreen.id: (context) => RegisterScreen(),
         MainChatScreen.id: (context) => MainChatScreen(),
+        PrivateChatScreen.id: (context) => PrivateChatScreen(),
       },
     );
   }

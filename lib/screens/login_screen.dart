@@ -1,12 +1,26 @@
 import 'package:chat420/constants.dart';
 import 'package:chat420/screens/main_chat_screen.dart';
+import 'package:chat420/screens/user_chat_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:chat420/components/rounded_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class LoginScreen extends StatelessWidget {
-  String username;
-  String password;
+class LoginScreen extends StatefulWidget {
   static const String id = 'loginScreen';
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  String username;
+
+  String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +49,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               TextField(
+                cursorColor: Colors.black,
                 textAlign: TextAlign.center,
                 style: kTextFieldStyle,
                 onChanged: (newValue) {
@@ -46,6 +61,7 @@ class LoginScreen extends StatelessWidget {
                 height: 8.0,
               ),
               TextField(
+                cursorColor: Colors.black,
                 textAlign: TextAlign.center,
                 obscureText: true,
                 style: kTextFieldStyle,
@@ -60,8 +76,17 @@ class LoginScreen extends StatelessWidget {
               ),
               RoundedButton(
                 buttonColor: Colors.white,
-                onTap: () {
-                  Navigator.pushNamed(context, MainChatScreen.id);
+                onTap: () async {
+                  try {
+                    final user = await _auth.signInWithEmailAndPassword(
+                        email: username, password: password);
+                    print(user);
+                    if (user != null) {
+                      Navigator.pushNamed(context, PrivateChatScreen.id);
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
                 },
                 text: 'Sign In',
               ),
